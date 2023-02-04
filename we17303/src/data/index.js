@@ -18,7 +18,7 @@ const projectsFake = [
     },
     { id: 2, name: "Dự án mẫu", author: "Đạt" },
     {
-        id: 2,
+        id: 3,
         name: "Dự án tốt nghiệp",
         teams: [
             { id: 1, name: "Hưng" },

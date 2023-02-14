@@ -4,6 +4,8 @@ import { render, router } from "./src/lib";
 import AboutPage from "./src/pages/aboutpage";
 import AdminProjectPage from "./src/pages/admin/Projects";
 import AdminProjectPageAdd from "./src/pages/admin/projects-add";
+import ProjectsAdminEdit from "./src/pages/admin/projects_edit";
+
 import Contact from "./src/pages/contact";
 import Home from "./src/pages/home";
 import Notfound from "./src/pages/notfound";
@@ -25,5 +27,6 @@ router.on("/project/:id", (params) => render(() => ProjectDetailPage(params), ap
 router.on("/post/:id", () => render(PostDetail, app));
 router.on("/admin/Projects", () => render(AdminProjectPage, app));
 router.on("/admin/Projects/add", () => render(AdminProjectPageAdd, app));
+router.on("/admin/Projects/:id/edit", ({ data }) => render(() => ProjectsAdminEdit(data), app));
 router.notFound(() => render(Notfound, app));
 router.resolve();

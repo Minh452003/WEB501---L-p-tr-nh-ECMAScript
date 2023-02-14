@@ -1,9 +1,10 @@
 import { useEffect, useState } from "@/lib";
 const AdminProjectPage = () => {
-    const [data, setData] = useState([]);
+    const [projects, setProjects] = useState([]);
     useEffect(() => {
-        const projects = JSON.parse(localStorage.getItem("projects")) || [];
-        setData(projects);
+        fetch("http://localhost:3000/projects")
+            .then((response) => response.json())
+            .then((data) => setProjects(data));
     }, []);
 
     useEffect(function () {
@@ -11,9 +12,12 @@ const AdminProjectPage = () => {
         for (let btn of btns) {
             btn.addEventListener("click", function () {
                 const id = this.dataset.id;
-                const newProjects = data.filter((project) => project.id != id);
-                localStorage.setItem("projects", JSON.stringify(newProjects));
-                setData(newProjects);
+                fetch(`http://localhost:3000/projects/${id}`, {
+                    method: "DELETE",
+                }).then(() => {
+                    const newProjects = projects.filter((project) => project.id != id);
+                    setProjects(newProjects);
+                })
             });
         }
     });
@@ -21,7 +25,7 @@ const AdminProjectPage = () => {
 
     return `<div class="container pt-5">
     <h1>Quản Lý Dự Án</h1>
-    <div><a href="/admin/Projects/add">Thêm sản phẩm</a></div>
+    <div><a href="#/admin/Projects/add">Thêm sản phẩm</a></div>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -32,7 +36,7 @@ const AdminProjectPage = () => {
             </tr>
         </thead>
         <tbody>
-            ${data.map(
+            ${projects.map(
         (project, index) => {
             return `
         <tr>
@@ -41,7 +45,7 @@ const AdminProjectPage = () => {
             <td>${project.author}</td>
             <td>
                 <button data-name="Minh" data-id="${project.id}" class="btn btn-danger btn-remove">Remove</button>
-                <a href="/Project/:id/:action">Edit</a>
+                <a href="/Project/${project.id}/edit">Edit</a>
             </td>
         </tr>`
         }).join("")}

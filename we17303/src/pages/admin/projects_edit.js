@@ -1,9 +1,9 @@
-import { useEffect, router } from "@/lib";
+import { useEffect, router, useState } from "@/lib";
 
 const ProjectsAdminEdit = ({ id }) => {
   const [projects, setProjects] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3000/projects")
+    fetch(`http://localhost:3000/projects/${id}`)
       .then((response) => response.json())
       .then((data) => setProjects(data));
   }, []);
@@ -15,18 +15,22 @@ const ProjectsAdminEdit = ({ id }) => {
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      const newProject = {
-        id: currentProject.id,
+      const formData = {
+        id: id,
         name: projectName.value,
         author: projectAuthor.value,
       };
-      const newProjects = projects.map((project) => {
-        return project.id == newProject.id ? newProject : project;
-      });
-
-      localStorage.setItem("projects", JSON.stringify(newProjects));
-      router.navigate("/admin/Projects");
+      fetch(`http://localhost:3000/projects/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }).then(() => router.navigate("/admin/Projects"));
     });
+
+
+
   });
   return `
   <div>
@@ -34,11 +38,11 @@ const ProjectsAdminEdit = ({ id }) => {
     <form action="" id="form-edit">
     <div class="form-group">
       <label for="">Tên sản phẩm</label>
-      <input class="form-control" type="text" id="project-name" value="${currentProject.name}">
+      <input class="form-control" type="text" id="project-name" value="${projects.name}">
     </div>
     <div class="form-group">
       <label for="">Tác giả</label>
-      <input class="form-control" type="text" id="project-author" value="${currentProject.author}">
+      <input class="form-control" type="text" id="project-author" value="${projects.author}">
     </div>
     <button class="btn btn-primary">Sửa dự án</button>
   </form>

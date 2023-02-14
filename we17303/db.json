@@ -1,9 +1,9 @@
 {
   "projects": [
     {
-      "name": "Test 1",
-      "author": "Minh",
-      "id": 4
+      "id": 4,
+      "name": "Test 1 update",
+      "author": "Minh"
     },
     {
       "name": "Test 3",
